@@ -1,0 +1,10 @@
+---
+import { getPosts } from '@/lib/getPosts'
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getPosts()
+  return paginate(posts, { pageSize: 6 })
+}
+---
+
+<!-- ここから作る -->
