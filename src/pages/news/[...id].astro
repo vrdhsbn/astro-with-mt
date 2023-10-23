@@ -1,10 +1,40 @@
 ---
+import Layout from '@/layouts/Layout.astro'
 import { getPosts } from '@/lib/getPosts'
 
-export async function getStaticPaths({ paginate }) {
+// MTの各投稿記事のオブジェクトの型ってどうしたらいい？
+type PostType = Record<string, unknown>
+
+export async function getStaticPaths() {
   const posts = await getPosts()
-  return paginate(posts, { pageSize: 6 })
+  return posts.items.map((post: PostType) => {
+    return {
+      params: { id: post.id },
+      props: { title: post.title, body: post.body },
+    }
+  })
 }
+
+const { title, body } = Astro.props
 ---
 
-<!-- ここから作る -->
+<Layout>
+  <main>
+    <h1>{title}</h1>
+    <div set:html={body} />
+  </main>
+</Layout>
+
+<style>
+  main {
+    width: 414px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #fff;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+</style>

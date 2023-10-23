@@ -1,0 +1,53 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getPosts } from '@/lib/getPosts'
+
+// MTの各投稿記事のオブジェクトの型ってどうしたらいい？
+type PostType = Record<string, unknown>
+
+const posts = await getPosts()
+---
+
+<Layout>
+  <main>
+    <h1>MTから取得したブログ一覧</h1>
+    <ul class="links">
+      {
+        posts.items.map((post: PostType) => (
+          <li>
+            <a href={`${post.id}.html`}>{post.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>
+
+<style>
+  main {
+    width: 414px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #fff;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .links {
+    margin-top: 24px;
+    list-style-type: circle;
+    margin-left: 24px;
+  }
+
+  li + li {
+    margin-top: 8px;
+  }
+
+  a {
+    text-decoration: underline;
+    color: #4444ff;
+  }
+</style>
