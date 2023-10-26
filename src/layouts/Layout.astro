@@ -1,5 +1,8 @@
 ---
+import Footer from './Footer'
+import Header from './Header'
 
+const { title } = Astro.props
 ---
 
 <html lang="ja">
@@ -8,15 +11,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro + MT demo</title>
+    <title>{title ? title : 'Astro + MT demo'}</title>
   </head>
   <body>
+    <Header />
     <slot />
+    <Footer />
   </body>
 </html>
-
-<style>
-  body {
-    background: #000;
-  }
-</style>

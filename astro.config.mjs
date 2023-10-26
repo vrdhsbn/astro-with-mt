@@ -6,7 +6,7 @@ import pandacss from '@pandacss/astro'
 // https://astro.build/config
 export default defineConfig({
   build: {
-    format: 'file',
+    format: 'directory',
   },
   server: {
     open: true,

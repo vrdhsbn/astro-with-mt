@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getData } from '@/lib/getData'
+
+type pageType = Record<string, unknown>
+
+export async function getStaticPaths() {
+  const pages = await getData('pages')
+  return pages.items.map((page: pageType) => {
+    return {
+      params: { id: page.id },
+      props: { title: page.title, body: page.body },
+    }
+  })
+}
+
+const { title, body } = Astro.props
+---
+
+<Layout title={title}>
+  <div set:html={body} />
+</Layout>
+
+<style>
+  body {
+    background: #fff;
+  }
+</style>

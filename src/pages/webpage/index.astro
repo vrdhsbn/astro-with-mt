@@ -3,19 +3,19 @@ import Layout from '@/layouts/Layout.astro'
 import { getData } from '@/lib/getData'
 
 // MTの各投稿記事のオブジェクトの型ってどうしたらいい？
-type PostType = Record<string, unknown>
+type pageType = Record<string, unknown>
 
-const posts = await getData('entries')
+const pages = await getData('pages')
 ---
 
 <Layout>
   <main>
-    <h1>MTから取得したブログ一覧</h1>
+    <h1>MTから取得したウェブページ一覧</h1>
     <ul class="links">
       {
-        posts.items.map((post: PostType) => (
+        pages.items.map((page: pageType) => (
           <li>
-            <a href={`/news/${post.id}/`}>{post.title}</a>
+            <a href={`/webpage/${page.id}/`}>{page.title}</a>
           </li>
         ))
       }

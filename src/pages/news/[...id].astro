@@ -1,40 +1,53 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { getPosts } from '@/lib/getPosts'
+import { getData } from '@/lib/getData'
+import { getCustomFields } from '@/hooks/getCustomFields'
 
 // MTの各投稿記事のオブジェクトの型ってどうしたらいい？
 type PostType = Record<string, unknown>
 
 export async function getStaticPaths() {
-  const posts = await getPosts()
+  const posts = await getData('entries')
+  const fields = await getCustomFields()
+  // console.log(fields.items)
+
   return posts.items.map((post: PostType) => {
     return {
       params: { id: post.id },
-      props: { title: post.title, body: post.body },
+      props: { title: post.title, body: post.body, customFields: post.customFields },
     }
   })
 }
 
-const { title, body } = Astro.props
+const { title, body, customFields } = Astro.props
 ---
 
 <Layout>
   <main>
     <h1>{title}</h1>
     <div set:html={body} />
+    {
+      // customFieldsのbasenameからfield.nameを取ってくるには？
+      customFields.map((field: any) => (
+        <p>
+          {/*{field.basename}：{field.value}*/}
+          この記事を読むのに必要な時間：{field.value}分
+        </p>
+      ))
+    }
   </main>
+
+  <style>
+    main {
+      width: 414px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #fff;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+  </style>
 </Layout>
-
-<style>
-  main {
-    width: 414px;
-    min-height: 100vh;
-    margin: 0 auto;
-    background: #fff;
-  }
-
-  h1 {
-    font-size: 24px;
-    font-weight: 700;
-  }
-</style>

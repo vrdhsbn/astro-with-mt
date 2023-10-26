@@ -1,7 +1,48 @@
 ---
-import Layout from '@/layouts/Layout.astro'
+import Layout from '@/layouts/Layout.astro';
+import { Box, Center, Container, Grid, HStack, styled } from 'styled-system/jsx';
+import { getEntries } from '@/hooks/getEntries';
+import { getWebpages } from '@/hooks/getWebpages';
+import Heading from '@/components/Heading';
+import ArticleContainer from '@/components/ArticleContainer';
+import Button from '@/components/Button';
+
+const posts = await getEntries(6);
+const pages = await getWebpages(3);
+
+type PageType = Record<string, string>;
 ---
 
 <Layout>
-  <p>hello</p>
+  <main>
+    <Container px="64px" py="64px">
+      <Box>
+        <Heading>注目のコンテンツ</Heading>
+        <Grid gridTemplateColumns="repeat(3, 1fr)" gap="24px" mt="16px">
+          {
+            pages.items.map((page: PageType) => (
+              <styled.a href={`/webpage/${page.id}/`} _hover={{ opacity: '.7' }}>
+                {page.assets[0] ? (
+                  <img src={page.assets[0].url} alt="" />
+                ) : (
+                  <img src="/assets/images/noimage.png" alt="no image" />
+                )}
+                <styled.p mt="4px" fontSize="18px">
+                  {page.title}
+                </styled.p>
+                <p>{page.customFields[0].value}</p>
+              </styled.a>
+            ))
+          }
+        </Grid>
+      </Box>
+      <Box mt="48px">
+        <Heading>最新記事</Heading>
+        <ArticleContainer posts={posts} />
+        <Center mt="32px">
+          <Button label="すべて見る" href="/news/" />
+        </Center>
+      </Box>
+    </Container>
+  </main>
 </Layout>
