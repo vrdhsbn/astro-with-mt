@@ -1,28 +1,32 @@
 ---
-import Layout from '@/layouts/Layout.astro'
-import { getData } from '@/lib/getData'
+import Layout from '@/layouts/Layout.astro';
+import { getWebpages } from '@/hooks/getWebpages';
+import MainVisual from '@/components/MainVisual';
+import { Box, Container } from 'styled-system/jsx';
+import Heading from '@/components/Heading';
+import { css } from 'styled-system/css';
 
-type pageType = Record<string, unknown>
+type pageType = Record<string, unknown>;
 
 export async function getStaticPaths() {
-  const pages = await getData('pages')
+  const pages = await getWebpages();
   return pages.items.map((page: pageType) => {
     return {
       params: { id: page.id },
-      props: { title: page.title, body: page.body },
-    }
-  })
+      props: { title: page.title, body: page.body, assets: page.assets[0].url },
+    };
+  });
 }
 
-const { title, body } = Astro.props
+const { title, body, assets } = Astro.props;
 ---
 
 <Layout title={title}>
-  <div set:html={body} />
+  <MainVisual assets={assets} />
+  <Container maxW={'960px'} pt={'64px'} pb={'64px'}>
+    <Heading>{title}</Heading>
+    <Box mt={'24px'} className="content">
+      <div set:html={body} />
+    </Box>
+  </Container>
 </Layout>
-
-<style>
-  body {
-    background: #fff;
-  }
-</style>

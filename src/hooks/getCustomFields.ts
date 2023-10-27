@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { mtAuth } from '@/lib/mtAuth'
+import { mtAuth } from '@/utils/mtAuth'
 
 async function getCustomFields() {
   const accessToken = await mtAuth()

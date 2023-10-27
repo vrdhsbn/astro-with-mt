@@ -17,9 +17,21 @@ const ArticleContainer = ({ posts }: { posts: PostsType }) => {
       {posts.items.map((post: PostType) => (
         <styled.a href={`/news/${post.id}/`} _hover={{ opacity: '.7' }}>
           {post.assets[0] ? (
-            <img src={post.assets[0].url} alt="" />
+            <styled.img
+              src={post.assets[0].url}
+              // w={'400px'}
+              h={'300px'}
+              objectFit={'contain'}
+              alt=""
+            />
           ) : (
-            <img src="/assets/images/noimage.png" alt="no image" />
+            <styled.img
+              src="/assets/images/noimage.png"
+              // w={'400px'}
+              h={'300px'}
+              objectFit={'contain'}
+              alt="no image"
+            />
           )}
           <styled.p mt="4px" fontSize="18px">
             {post.title}

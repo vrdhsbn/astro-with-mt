@@ -1,53 +1,51 @@
 ---
-import Layout from '@/layouts/Layout.astro'
-import { getData } from '@/lib/getData'
-import { getCustomFields } from '@/hooks/getCustomFields'
+import Layout from '@/layouts/Layout.astro';
+import { getEntries } from '@/hooks/getEntries';
+import { getCustomFields } from '@/hooks/getCustomFields';
+import Heading from '@/components/Heading';
+import { Container, Box, styled } from 'styled-system/jsx';
 
 // MTの各投稿記事のオブジェクトの型ってどうしたらいい？
-type PostType = Record<string, unknown>
+type PostType = Record<string, unknown>;
 
 export async function getStaticPaths() {
-  const posts = await getData('entries')
-  const fields = await getCustomFields()
+  const posts = await getEntries();
+  const fields = await getCustomFields();
   // console.log(fields.items)
 
   return posts.items.map((post: PostType) => {
     return {
       params: { id: post.id },
-      props: { title: post.title, body: post.body, customFields: post.customFields },
-    }
-  })
+      props: {
+        title: post.title,
+        body: post.body,
+        customFields: post.customFields,
+        date: post.date,
+      },
+    };
+  });
 }
 
-const { title, body, customFields } = Astro.props
+const { title, body, customFields, date } = Astro.props;
 ---
 
-<Layout>
-  <main>
-    <h1>{title}</h1>
-    <div set:html={body} />
+<Layout title={title}>
+  <Container maxW={'640px'} pt={'64px'} pb={'64px'}>
+    <Heading>{title}</Heading>
+    {(<styled.p mt="8px">投稿日：{date.split('T')[0]}</styled.p>)}
     {
       // customFieldsのbasenameからfield.nameを取ってくるには？
-      customFields.map((field: any) => (
-        <p>
-          {/*{field.basename}：{field.value}*/}
-          この記事を読むのに必要な時間：{field.value}分
-        </p>
-      ))
+      customFields.map((field: any) => {
+        return (
+          <styled.p mt="8px">
+            {/*{field.basename}：{field.value}*/}
+            この記事を読むのに必要な時間：{field.value}分
+          </styled.p>
+        );
+      })
     }
-  </main>
-
-  <style>
-    main {
-      width: 414px;
-      min-height: 100vh;
-      margin: 0 auto;
-      background: #fff;
-    }
-
-    h1 {
-      font-size: 24px;
-      font-weight: 700;
-    }
-  </style>
+    <Box mt={'24px'} className="content">
+      <div set:html={body} />
+    </Box>
+  </Container>
 </Layout>

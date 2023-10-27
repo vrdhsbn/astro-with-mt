@@ -1,53 +1,16 @@
 ---
-import Layout from '@/layouts/Layout.astro'
-import { getData } from '@/lib/getData'
+import Layout from '@/layouts/Layout.astro';
+import { getEntries } from '@/hooks/getEntries';
+import Heading from '@/components/Heading';
+import { Container } from 'styled-system/jsx';
+import ArticleList from '@/components/ArticleList';
 
-// MTの各投稿記事のオブジェクトの型ってどうしたらいい？
-type PostType = Record<string, unknown>
-
-const posts = await getData('entries')
+const posts = await getEntries();
 ---
 
 <Layout>
-  <main>
-    <h1>MTから取得したブログ一覧</h1>
-    <ul class="links">
-      {
-        posts.items.map((post: PostType) => (
-          <li>
-            <a href={`/news/${post.id}/`}>{post.title}</a>
-          </li>
-        ))
-      }
-    </ul>
-  </main>
+  <Container maxW={'640px'} pt={'64px'} pb={'64px'}>
+    <Heading>MTから取得したすべての記事</Heading>
+    <ArticleList posts={posts} />
+  </Container>
 </Layout>
-
-<style>
-  main {
-    width: 414px;
-    min-height: 100vh;
-    margin: 0 auto;
-    background: #fff;
-  }
-
-  h1 {
-    font-size: 24px;
-    font-weight: 700;
-  }
-
-  .links {
-    margin-top: 24px;
-    list-style-type: circle;
-    margin-left: 24px;
-  }
-
-  li + li {
-    margin-top: 8px;
-  }
-
-  a {
-    text-decoration: underline;
-    color: #4444ff;
-  }
-</style>
