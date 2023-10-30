@@ -4,14 +4,11 @@ import { getEntries } from '@/hooks/getEntries';
 import { getCustomFields } from '@/hooks/getCustomFields';
 import Heading from '@/components/Heading';
 import { Container, Box, styled } from 'styled-system/jsx';
-
-// MTの各投稿記事のオブジェクトの型ってどうしたらいい？
-type PostType = Record<string, unknown>;
+import type { PostType } from '@/types/PostType';
 
 export async function getStaticPaths() {
   const posts = await getEntries();
-  const fields = await getCustomFields();
-  // console.log(fields.items)
+  // const fields = await getCustomFields();
 
   return posts.items.map((post: PostType) => {
     return {
@@ -34,14 +31,8 @@ const { title, body, customFields, date } = Astro.props;
     <Heading>{title}</Heading>
     {(<styled.p mt="8px">投稿日：{date.split('T')[0]}</styled.p>)}
     {
-      // customFieldsのbasenameからfield.nameを取ってくるには？
       customFields.map((field: any) => {
-        return (
-          <styled.p mt="8px">
-            {/*{field.basename}：{field.value}*/}
-            この記事を読むのに必要な時間：{field.value}分
-          </styled.p>
-        );
+        return <styled.p mt="8px">この記事を読むのに必要な時間：{field.value}分</styled.p>;
       })
     }
     <Box mt={'24px'} className="content">

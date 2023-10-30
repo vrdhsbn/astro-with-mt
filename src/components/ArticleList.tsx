@@ -1,16 +1,6 @@
 import { css } from 'styled-system/css'
 import { styled } from 'styled-system/jsx'
-
-type PostType = {
-  assets: Array<any>
-  title: string
-  date: string
-  excerpt: string
-} & Record<string, unknown>
-
-type PostsType = {
-  items: Array<PostType>
-}
+import type { PostType, PostsType } from '@/types/PostType'
 
 const ArticleList = ({ posts }: { posts: PostsType }) => {
   return (

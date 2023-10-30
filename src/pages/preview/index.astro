@@ -1,0 +1,23 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getDraft } from '@/hooks/getDraft';
+import Heading from '@/components/Heading';
+import { Container, Box, styled } from 'styled-system/jsx';
+
+const draft = await getDraft();
+---
+
+<Layout title={draft.items[0].title}>
+  <Container maxW={'640px'} pt={'64px'} pb={'64px'}>
+    <Heading>{draft.items[0].title}</Heading>
+    {(<styled.p mt="8px">投稿日：{draft.items[0].date.split('T')[0]}</styled.p>)}
+    {
+      draft.items[0].customFields.map((field: any) => {
+        return <styled.p mt="8px">この記事を読むのに必要な時間：{field.value}分</styled.p>;
+      })
+    }
+    <Box mt={'24px'} className="content">
+      <div set:html={draft.items[0].body} />
+    </Box>
+  </Container>
+</Layout>

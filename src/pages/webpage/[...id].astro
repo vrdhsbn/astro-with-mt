@@ -4,16 +4,18 @@ import { getWebpages } from '@/hooks/getWebpages';
 import MainVisual from '@/components/MainVisual';
 import { Box, Container } from 'styled-system/jsx';
 import Heading from '@/components/Heading';
-import { css } from 'styled-system/css';
-
-type pageType = Record<string, unknown>;
+import type { PageType } from '@/types/PageType';
 
 export async function getStaticPaths() {
   const pages = await getWebpages();
-  return pages.items.map((page: pageType) => {
+  return pages.items.map((page: PageType) => {
     return {
-      params: { id: page.id },
-      props: { title: page.title, body: page.body, assets: page.assets[0].url },
+      params: { id: page.basename },
+      props: {
+        title: page.title,
+        body: page.body,
+        assets: page.assets[0].url,
+      },
     };
   });
 }

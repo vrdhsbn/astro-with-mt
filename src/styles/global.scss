@@ -4,10 +4,15 @@
     text-decoration: underline;
   }
 
-  // table {
-  // }
+  table {
+    th,
+    td {
+      border: solid 1px #ccc;
+      padding: 8px;
+    }
+  }
 
   * + * {
-    margin-top: 16px;
+    margin-top: 24px;
   }
 }

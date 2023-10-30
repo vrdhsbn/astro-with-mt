@@ -1,15 +1,5 @@
 import { Grid, styled } from 'styled-system/jsx'
-
-type PostType = {
-  assets: Array<any>
-  title: string
-  date: string
-  excerpt: string
-} & Record<string, unknown>
-
-type PostsType = {
-  items: Array<PostType>
-}
+import type { PostType, PostsType } from '@/types/PostType'
 
 const ArticleContainer = ({ posts }: { posts: PostsType }) => {
   return (
@@ -17,17 +7,10 @@ const ArticleContainer = ({ posts }: { posts: PostsType }) => {
       {posts.items.map((post: PostType) => (
         <styled.a href={`/news/${post.id}/`} _hover={{ opacity: '.7' }}>
           {post.assets[0] ? (
-            <styled.img
-              src={post.assets[0].url}
-              // w={'400px'}
-              h={'300px'}
-              objectFit={'contain'}
-              alt=""
-            />
+            <styled.img src={post.assets[0].url} h={'300px'} objectFit={'contain'} alt="" />
           ) : (
             <styled.img
               src="/assets/images/noimage.png"
-              // w={'400px'}
               h={'300px'}
               objectFit={'contain'}
               alt="no image"

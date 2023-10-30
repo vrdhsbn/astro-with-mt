@@ -1,19 +1,11 @@
 import { Box, Grid, styled } from 'styled-system/jsx'
-
-// 型の書き方がわからない。urlやvalueで型エラーが出ている
-type PageType = {
-  assets: Array<string>
-} & Record<string, string>
-
-type PagesType = {
-  items: Array<PageType>
-}
+import type { PageType, PagesType } from '@/types/PageType'
 
 const PageContainer = ({ pages }: { pages: PagesType }) => {
   return (
     <Grid gridTemplateColumns="repeat(3, 1fr)" gap="24px" mt="16px">
       {pages.items.map((page: PageType) => (
-        <styled.a href={`/webpage/${page.id}/`} _hover={{ opacity: '.7' }}>
+        <styled.a href={`/webpage/${page.basename}/`} _hover={{ opacity: '.7' }}>
           {page.assets[0] ? (
             <img src={page.assets[0].url} alt="" />
           ) : (
